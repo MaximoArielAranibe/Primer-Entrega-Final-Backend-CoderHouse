@@ -1,49 +1,39 @@
 import express from "express";
-import productRouter from "./routes/products.router.js";
-import cartRouter from './routes/carts.router.js'
 import __dirname from "./utils.js";
+import { Server } from "socket.io";
+import { engine } from "express-handlebars";
+import productRouter from "./routes/products.router.js";
+import cartRouter from "./routes/carts.router.js";
+import realTimeProducts from './routes/realTimeProducts.router.js'
 
+
+//Express
 const app = express();
-
+express.json();
 express.urlencoded({ extended: true });
 
-app.use('/api/products', productRouter);
-app.use('/api/carts', cartRouter);
+//Handlebars
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", __dirname + "/views");
+app.use(express.static(__dirname + "/../public"))
 
-express.static('public/'+ __dirname )
-
-
-/* app.get('/products', async (req, res) => {
-
-
-	const { limit } = req.query
-
-  const products = await manager.read();
-
-	const productLimit = products.slice(0,limit);
+//Routes
+app.use("/api/products", productRouter);
+app.use("/api/carts", cartRouter);
+app.use("/realtimeproducts", realTimeProducts)
 
 
-	if (!limit) {
-		res.send({products})
-	} else {
-		res.send({productLimit})
-	}
-}); */
-
-/* app.get('/products/:pid', async (req,res) => {
-	const pid = req.params.pid;
-	const products = await manager.read();
-	const productFind = products.find(e => e.id == pid);
-	
-	if(!productFind){
-		return res
-		.status(404)
-		.send({error: `No existe el usuario con ID ${req.params.pid}`})
-	}else{
-		res.json({productFind})
-	}
-}) */
-
-app.listen(8080, () => {
-  console.log("Listening server on port 8080");
-});
+//Sockets
+const httpServer = app.listen(8080, () => {
+	console.log("Server listening on port 8080");
+  });
+  
+  const io = new Server(httpServer);
+  
+  io.on('connection', (socket) => {
+	console.log('a user connected');
+	socket.on('disconnect', () => {
+	  console.log('user disconnected');
+	});
+  });
