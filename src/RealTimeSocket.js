@@ -4,9 +4,9 @@ function runServer(server) {
   const io = new Server(server);
 
   io.on("connection", (socket) => {
-    console.log("a user connected");
+    console.log("Usuario conectado");
     socket.on("disconnect", () => {
-      console.log("user disconnected");
+      console.log("Usuario desconectado");
     });
   });
 };

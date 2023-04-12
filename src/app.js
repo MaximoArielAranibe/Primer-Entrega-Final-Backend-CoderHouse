@@ -1,11 +1,11 @@
 import express from "express";
 import __dirname from "./utils.js";
-import { Server } from "socket.io";
 import { engine } from "express-handlebars";
 import productRouter from "./routes/products.router.js";
 import cartRouter from "./routes/carts.router.js";
-import runServer from "./RealTimeSocket.js";
 import realTimeProducts from "./routes/realTimeProducts.router.js";
+import EventEmitter from "events";
+EventEmitter.defaultMaxListeners = 15;
 
 //Express
 const app = express();
@@ -28,7 +28,6 @@ const httpServer = app.listen(8080, () => {
   console.log("Server listening on port 8080");
 });
 
-runServer(httpServer);
 
 /* 
 const io = new Server(httpServer);
