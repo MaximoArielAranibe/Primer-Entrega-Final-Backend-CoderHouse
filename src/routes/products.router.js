@@ -1,8 +1,8 @@
 import { json, Router } from "express";
-import ProductManager from "../productManager.js";
+import { ProductManager } from "../dao/index.js";
 
 const productRouter = Router();
-const manager = new ProductManager("src/json/productos.json");
+const manager = new ProductManager();
 
 productRouter.use(json());
 
@@ -18,13 +18,15 @@ productRouter.get("/", async (req, res) => {
 			return res.json({ result: productLimit });
     }
   } catch (error) {
-    res.error(401).send("Error en get");
+    return res
+    .status(401)
+    .send("Error en get");
   }
 });
 
 productRouter.get("/:pid", async (req, res) => {
   const pid = req.params.pid;
-  const products = await manager.read();
+  const products = await manager.get();
   const productFind = products.find((e) => e.id == pid);
 
   if (!productFind) {
@@ -37,8 +39,8 @@ productRouter.get("/:pid", async (req, res) => {
 });
 
 productRouter.post('/', async (req, res) => {
-	const {title, description, price, thumbnail, code, stock} = req.query;
-	const productAdded = await manager.add(title, description, price, thumbnail, code, stock)
+	const {title, description, price, thumbnail, code, stock} = req.body;
+	const productAdded = await manager.add({title, description, price, thumbnail, code, stock})
 	return res.status(201).send({productAdded})
 });
 

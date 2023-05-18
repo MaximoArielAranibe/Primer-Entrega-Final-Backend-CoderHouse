@@ -1,12 +1,16 @@
 import fs from "fs";
+import __dirname from "../../utils.js";
 
-class cartManager {
-  constructor(path) {
+const path = __dirname + "/dao/file-managers/files/carts.json"
+
+export default class CartManager {
+  constructor() {
     this.path = path;
+    this.format = "utf-8";
   }
 
   write = async (list) => {
-    fs.promises.writeFile(this.path, JSON.stringify(list));
+    return await fs.promises.writeFile(this.path, JSON.stringify(list));
   };
 
   read = () => {
@@ -53,8 +57,5 @@ class cartManager {
 			console.log("Error :", error);
     }
   };
-}
+};
 
-const manager = new cartManager("src/json/carts.json");
-
-export default cartManager;

@@ -1,7 +1,10 @@
 import fs from "fs";
+import __dirname from "../../utils.js";
 
-class ProductManager {
-  constructor(path) {
+const path = __dirname + "/dao/file-managers/files/products.json"
+
+export default class ProductManager {
+  constructor() {
     this.path = path;
     this.format = "utf-8";
   }
@@ -99,12 +102,3 @@ class ProductManager {
     }
   };
 }
-
-const manager = new ProductManager("src/json/productos.json");
-/*
-console.log(await manager.updateProduct(3,"3333","hola","hola","hola","hola","hola")); */
-
-/* console.log(await manager.delete(3)
-); */
-
-export default ProductManager;

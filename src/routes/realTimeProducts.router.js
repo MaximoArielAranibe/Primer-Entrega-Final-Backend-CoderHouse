@@ -1,9 +1,9 @@
 import { Router, json } from "express";
-import ProductManager from "../productManager.js";
+import ProductManager from "../dao/file-managers/ProductManager.js";
 import runServer from "../RealTimeSocket.js";
 import httpServer from "../app.js";
 
-const path = "src/json/productos.json";
+const path = "src/dao/file-managers/files/productos.json";
 const manager = new ProductManager(path);
 const products = await manager.get();
 const num = 1;

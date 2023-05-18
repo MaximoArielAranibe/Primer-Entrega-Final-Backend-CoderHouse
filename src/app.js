@@ -3,9 +3,11 @@ import __dirname from "./utils.js";
 import { engine } from "express-handlebars";
 import productRouter from "./routes/products.router.js";
 import cartRouter from "./routes/carts.router.js";
+import viewsRouter from "./routes/views.router.js";
 import realTimeProducts from "./routes/realTimeProducts.router.js";
 import EventEmitter from "events";
 import mongoose from "mongoose";
+EventEmitter.defaultMaxListeners = 15;
 
 /* 
 
@@ -27,10 +29,10 @@ import mongoose from "mongoose";
 
 
 
-EventEmitter.defaultMaxListeners = 15;
 
-const database = "mongodb+srv://darknesswong:dufONctAnRpA4BNK@mongopruebas.nqjsihc.mongodb.net/test"
-mongoose.connect(database)
+mongoose.connect("mongodb+srv://darknesswong:HjiWgsym73ihEnur@eccomerce.ezoch9b.mongodb.net/eccomerce").then((conn) => {
+  console.log("Connected to DB");
+});
 
 
 //Express
@@ -45,6 +47,7 @@ app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/../public"));
 
 //Routes
+app.use("/", viewsRouter)
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 app.use("/realtimeproducts", realTimeProducts)

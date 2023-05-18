@@ -1,13 +1,13 @@
-import { json, Router } from "express";
-import cartManager from "../carts.js";
-
-const manager = new cartManager("src/json/carts.json");
+import { Router } from "express";
+import { CartManager } from "../dao/index.js";
 
 const cartRouter = Router();
+const manager = new CartManager();
+
 
 cartRouter.get("/:pid", async (req, res) => {
   const cid = req.params.pid;
-  const items = await manager.read();
+  const items = await manager.get();
   const itemFilter = items.find((e) => e.id == cid);
   if (!itemFilter) {
     res
