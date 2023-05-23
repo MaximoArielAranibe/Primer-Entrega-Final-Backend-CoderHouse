@@ -2,22 +2,21 @@ import cartModel from "../models/carts.model.js";
 
 export default class CartManager {
   constructor() {
-    console.log("Working with carts using database");
+    console.log("Working with courses using database");
   }
 
-  getAll = async () => {
+  get = async () => {
     const carts = await cartModel.find().lean();
     return carts;
   };
 
   create = async (cart) => {
     const result = await cartModel.create(cart);
-    return result;
+    return result.save();
   };
 
-  addOneItem = async (id, quantity) => {
-    const cart = await cartModel.findById(id);
-    cart.quantity.push({ quantity });
-    return cart.save();
+  add = async (id) => {
+    const result = await cartModel.create(id);
+    return result;
   };
 }

@@ -35,7 +35,7 @@ export default class CartManager {
 
   add = async (id) => {
     const cart = await this.get();
-    let itemExist = cart.find((e) => e.id == id);
+    let itemExist = cart.some((e) => e.id == id);
     try {
       if (itemExist == undefined) {
         const newItem = {

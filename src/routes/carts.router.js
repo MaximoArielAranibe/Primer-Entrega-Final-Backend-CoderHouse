@@ -22,7 +22,7 @@ cartRouter.post('/:cid/product/:pid', async (req,res) => {
 	const cid = req.params.cid;
 	const pid = req.params.pid;
 	await manager.add({id: pid, quantity: cid})
-	const carts = await manager.read();
+	const carts = await manager.get();
 	res.status(201).send({products: carts})
 })
 
